@@ -4,7 +4,8 @@ const todos = [
   { id: 1, content: 'Javascript', completed: false }
 ];
 
-const createListItem = (id, content, completed) => `<li id="${id}">
+const createListItem = (id, content, completed) => `
+<li id="${id}">
     <label><input type="checkbox"${
       completed ? ' checked' : ''
     }>${content}</label>
@@ -12,11 +13,7 @@ const createListItem = (id, content, completed) => `<li id="${id}">
 
 const render = todos =>
   todos
-    .map(
-      (todo, i) =>
-        createListItem(todo.id, todo.content, todo.completed) +
-        (i < todos.length - 1 ? '\n' : '')
-    )
-    .join('');
+    .map((todo, i) => createListItem(todo.id, todo.content, todo.completed))
+    .join('\n');
 
 console.log(render(todos));
