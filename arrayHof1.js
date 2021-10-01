@@ -13,7 +13,7 @@ const createListItem = (id, content, completed) => `
 
 const render = todos =>
   todos
-    .map((todo, i) => createListItem(todo.id, todo.content, todo.completed))
+    .map(todo => createListItem(todo.id, todo.content, todo.completed))
     .join('\n');
 
 console.log(render(todos));
