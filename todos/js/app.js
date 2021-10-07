@@ -8,6 +8,9 @@ const $destroy = document.querySelector('.destroy');
 const $toggle = document.querySelector('.toggle');
 const $todoCount = document.querySelector('.todo-count');
 const $clearCompleted = document.querySelector('.clear-completed');
+const $view = document.querySelector('.view');
+const $edit = document.querySelector('.edit');
+const $toggleAll = document.querySelector('.toggle-all');
 
 const createListHtml = ({ id, content, completed }) => `
 <li data-id="${id}" class="">
@@ -28,6 +31,7 @@ const render = todos =>
 
 const setTodos = todos => {
   const todoCount = todos.length;
+
   $todoList.innerHTML = render(todos);
   $todoCount.innerHTML = `${todoCount} ${
     todoCount > 1 ? 'items' : 'item'
@@ -41,6 +45,15 @@ const toggleCompletedById = (todos, id) =>
   todos.map(todo =>
     todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
   );
+
+const countCompletedTodos = todos =>
+  todos.filter(todo => todo.completed).length;
+
+const toggleCompletedAll = todos =>
+  todos.map(todo => ({
+    ...todo,
+    completed: !(countCompletedTodos(todos) === todos.length)
+  }));
 
 $newTodo.onkeyup = e => {
   if (e.key !== 'Enter') {
@@ -70,9 +83,32 @@ $todoList.onclick = e => {
   setTodos(todos);
 };
 
+// 더블클릭 시 에디팅 모드로 진입 기능 구현 완성해야 함.
+// $todoList.ondblclick = e => {
+//   if (e.target.nodeName !== 'LABEL') return;
+
+//   const editTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
+
+//   console.log(editTodoId);
+//   console.log(e.target.parentNode.parentNode);
+
+//   e.target.parentNode.parentNode.classList.add('editing');
+
+//   console.log('A', e.target.parentNode);
+
+//   console.log('A', e.target.parentNode.parentNode.classList);
+
+//   setTodos(todos);
+// };
+
 $todoList.onchange = e => {
   const checkedTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
   todos = toggleCompletedById(todos, checkedTodoId);
+};
+
+$toggleAll.onchange = () => {
+  todos = toggleCompletedAll(todos);
+  setTodos(todos);
 };
 
 setTodos(todos);
