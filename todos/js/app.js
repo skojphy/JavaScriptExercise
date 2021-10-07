@@ -7,6 +7,7 @@ const $todoList = document.querySelector('.todo-list');
 const $destroy = document.querySelector('.destroy');
 const $toggle = document.querySelector('.toggle');
 const $todoCount = document.querySelector('.todo-count');
+const $clearCompleted = document.querySelector('.clear-completed');
 
 const createListHtml = ({ id, content, completed }) => `
 <li data-id="${id}" class="">
@@ -31,6 +32,7 @@ const setTodos = todos => {
   $todoCount.innerHTML = `${todoCount} ${
     todoCount > 1 ? 'items' : 'item'
   } left`;
+  $clearCompleted.style.display = todos.length ? 'block' : 'none';
 };
 
 const removeTodo = (todos, id) => todos.filter(todo => todo.id !== id);
@@ -72,3 +74,5 @@ $todoList.onchange = e => {
   const checkedTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
   todos = toggleCompletedById(todos, checkedTodoId);
 };
+
+setTodos(todos);
