@@ -6,6 +6,7 @@ const $todoAdd = document.querySelector('.todo-add');
 const $todoList = document.querySelector('.todo-list');
 const $destroy = document.querySelector('.destroy');
 const $toggle = document.querySelector('.toggle');
+const $todoCount = document.querySelector('.todo-count');
 
 const createListHtml = ({ id, content, completed }) => `
 <li data-id="${id}" class="">
@@ -23,6 +24,14 @@ const getMaxId = todos => Math.max(...todos.map(todo => todo.id), 0);
 
 const render = todos =>
   todos.reduce((html, todo) => html + '\n' + createListHtml(todo), '');
+
+const setTodos = todos => {
+  const todoCount = todos.length;
+  $todoList.innerHTML = render(todos);
+  $todoCount.innerHTML = `${todoCount} ${
+    todoCount > 1 ? 'items' : 'item'
+  } left`;
+};
 
 const removeTodo = (todos, id) => todos.filter(todo => todo.id !== id);
 
@@ -45,10 +54,9 @@ $newTodo.onkeyup = e => {
 
     todos = addTodo(todos, newTodoItem);
 
-    $todoList.innerHTML = render(todos);
+    setTodos(todos);
   }
   $newTodo.value = '';
-  console.log(todos);
 };
 
 $todoList.onclick = e => {
@@ -57,11 +65,10 @@ $todoList.onclick = e => {
   const removeTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
 
   todos = removeTodo(todos, removeTodoId);
-  $todoList.innerHTML = render(todos);
+  setTodos(todos);
 };
 
 $todoList.onchange = e => {
   const checkedTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
-  console.log(checkedTodoId);
   todos = toggleCompletedById(todos, checkedTodoId);
 };
