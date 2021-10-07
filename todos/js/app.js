@@ -10,7 +10,7 @@ const $toggle = document.querySelector('.toggle');
 const createListHtml = ({ id, content, completed }) => `
 <li data-id="${id}" class="">
     <div class="view">
-        <input type="checkbox" class="toggle" />
+        <input type="checkbox" class="toggle" ${completed ? 'checked' : ''}/>
         <label>${content}</label>
         <button class="destroy"></button>
     </div>
@@ -25,6 +25,11 @@ const render = todos =>
   todos.reduce((html, todo) => html + '\n' + createListHtml(todo), '');
 
 const removeTodo = (todos, id) => todos.filter(todo => todo.id !== id);
+
+const toggleCompletedById = (todos, id) =>
+  todos.map(todo =>
+    todo.id === id ? { ...todo, completed: !todo.completed } : { ...todo }
+  );
 
 $newTodo.onkeyup = e => {
   if (e.key !== 'Enter') {
@@ -53,4 +58,10 @@ $todoList.onclick = e => {
 
   todos = removeTodo(todos, removeTodoId);
   $todoList.innerHTML = render(todos);
+};
+
+$todoList.onchange = e => {
+  const checkedTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
+  console.log(checkedTodoId);
+  todos = toggleCompletedById(todos, checkedTodoId);
 };
