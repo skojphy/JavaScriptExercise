@@ -11,6 +11,9 @@ const $clearCompleted = document.querySelector('.clear-completed');
 const $view = document.querySelector('.view');
 const $edit = document.querySelector('.edit');
 const $toggleAll = document.querySelector('.toggle-all');
+const $all = document.getElementById('all');
+const $active = document.getElementById('active');
+const $completed = document.getElementById('completed');
 
 const createListHtml = ({ id, content, completed }) => `
 <li data-id="${id}" class="">
@@ -109,6 +112,24 @@ $todoList.onchange = e => {
 $toggleAll.onchange = () => {
   todos = toggleCompletedAll(todos);
   setTodos(todos);
+};
+
+$all.onclick = e => {
+  e.target.classList.add('selected');
+
+  setTodos(todos);
+};
+
+$active.onclick = e => {
+  e.target.classList.add('selected');
+
+  setTodos(todos.filter(todo => !todo.completed));
+};
+
+$completed.onclick = e => {
+  e.target.classList.add('selected');
+
+  setTodos(todos.filter(todo => todo.completed));
 };
 
 setTodos(todos);
