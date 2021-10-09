@@ -16,7 +16,7 @@ const $active = document.getElementById('active');
 const $completed = document.getElementById('completed');
 
 const createListHtml = ({ id, content, completed }) => `
-<li data-id="${id}" class="">
+<li data-id="${id}">
     <div class="view">
         <input type="checkbox" class="toggle" ${completed ? 'checked' : ''}/>
         <label>${content}</label>
@@ -52,6 +52,8 @@ const toggleCompletedById = (todos, id) =>
 const countCompletedTodos = todos =>
   todos.filter(todo => todo.completed).length;
 
+const clearCompleted = todos => todos.filter(todo => !todo.completed);
+
 const toggleCompletedAll = todos =>
   todos.map(todo => ({
     ...todo,
@@ -86,23 +88,18 @@ $todoList.onclick = e => {
   setTodos(todos);
 };
 
-// 더블클릭 시 에디팅 모드로 진입 기능 구현 완성해야 함.
-// $todoList.ondblclick = e => {
-//   if (e.target.nodeName !== 'LABEL') return;
+$todoList.ondblclick = e => {
+  if (e.target.nodeName !== 'LABEL') return;
 
-//   const editTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
+  e.target.parentNode.parentNode.classList.add('editing');
+};
 
-//   console.log(editTodoId);
-//   console.log(e.target.parentNode.parentNode);
+$todoList.onkeyup = e => {
+  if (e.key !== 'Enter') return;
+  const newContent = e.target.value.trim();
 
-//   e.target.parentNode.parentNode.classList.add('editing');
-
-//   console.log('A', e.target.parentNode);
-
-//   console.log('A', e.target.parentNode.parentNode.classList);
-
-//   setTodos(todos);
-// };
+  setTodos(todos);
+};
 
 $todoList.onchange = e => {
   const checkedTodoId = +e.target.parentNode.parentNode.getAttribute('data-id');
@@ -115,19 +112,39 @@ $toggleAll.onchange = () => {
 };
 
 $all.onclick = e => {
-  e.target.classList.add('selected');
+  // e.target.classList.add('selected');
+
+  [...document.querySelectorAll('.filters a')].forEach(filter => {
+    filter === e.target
+      ? e.target.classList.add('selected')
+      : e.target.classList.remove('selected');
+  });
 
   setTodos(todos);
 };
 
 $active.onclick = e => {
-  e.target.classList.add('selected');
+  // e.target.classList.add('selected');
+
+  console.log([...document.querySelectorAll('.filters a')]);
+
+  [...document.querySelectorAll('.filters a')].forEach(filter => {
+    filter === e.target
+      ? e.target.classList.add('selected')
+      : e.target.classList.remove('selected');
+  });
 
   setTodos(todos.filter(todo => !todo.completed));
 };
 
 $completed.onclick = e => {
-  e.target.classList.add('selected');
+  // e.target.classList.add('selected');
+
+  [...document.querySelectorAll('.filters a')].forEach(filter => {
+    filter === e.target
+      ? e.target.classList.add('selected')
+      : e.target.classList.remove('selected');
+  });
 
   setTodos(todos.filter(todo => todo.completed));
 };
