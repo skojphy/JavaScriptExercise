@@ -1,7 +1,6 @@
 const getLastDayOfMonth = (year, month) => {
-  const day = new Date();
-  day.setFullYear(year, month + 1, 1);
-  return (day.getDay() - 1) % 7;
+  const firstDayOfNextMonth = new Date(year, month + 1, 1);
+  return (firstDayOfNextMonth.getDay() + 6) % 7;
 };
 
 console.log(getLastDayOfMonth(2021, 0)); // 0

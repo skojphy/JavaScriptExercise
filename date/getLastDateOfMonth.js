@@ -1,7 +1,6 @@
 const getLastDateOfMonth = (year, month) => {
-  const day = new Date();
-  day.setFullYear(year, month + 1, 1);
-  const lastDay = new Date(day - 86400000);
+  const firstDayOfNextMonth = new Date(year, month + 1, 1);
+  const lastDay = new Date(firstDayOfNextMonth - 86400000);
   return lastDay.getDate();
 };
 
